@@ -1,39 +1,46 @@
 # Oracle Exadata X11M — Solution Architecture
 
-> Parcours d’architecture solution Oracle Exadata X11M orienté banque, paiements, haute disponibilité, PRA, sécurité, capacité, coûts et exploitation.
+> Parcours d’architecture solution Oracle Exadata X11M orienté banque, paiements, haute disponibilité, PRA, sécurité, capacité, licensing, FinOps, Green IT/GreenOps et exploitation.
 
 ## Objectif
 
 Ce dépôt ne remplace pas `oracle-exadata-infra-ha-dr-course-labs-v5`.
 
-- **V5** = apprendre et diagnostiquer la technologie Exadata.
-- **Ce dépôt** = savoir **concevoir, justifier et défendre une architecture Exadata** devant un comité d’architecture, une production, une sécurité ou un métier.
+- **V5** = apprendre, administrer et diagnostiquer la technologie Exadata.
+- **Ce dépôt** = savoir **concevoir, justifier et défendre une architecture Exadata** devant un comité d’architecture, une production, une sécurité, un métier ou une gouvernance coûts/carbone.
 
-La démarche suivie est :
+Démarche :
 
-`Besoin métier → criticité → NFR/SLA → charge → capacité → scénarios → architecture cible → HA/DR → sécurité → exploitation → coûts → risques → ADR → HLD/LLD → validation`
+`Besoin métier → criticité → NFR/SLA → workload → sizing → scénarios → architecture cible → HA/DR/MAA → sécurité → exploitation → licensing/FinOps → GreenOps → risques → ADR → HLD/LLD → validation`
 
 ## Positionnement 2026
 
-Le socle principal est **Oracle Exadata X11M** avec prise en compte de **Exadata System Software 26ai / 26.1** et d’**Exascale**.
+Le socle principal est **Oracle Exadata X11M**, **Exascale** et **Exadata System Software 26.1**.
 
-Points actuels à maîtriser :
+Points à maîtriser :
 
-- architecture X11M : DB Servers, Storage Servers, RDMA/RoCE, XRMEM, flash, Smart Scan ;
-- Oracle Linux KVM et consolidation ;
-- Exascale : pool disks, storage pools, vaults, volumes, snapshots/clones, resource management ;
-- Exadata VM Live Migration introduite avec System Software 26.1 ;
-- RAC, ASM/Grid Infrastructure, Data Guard / Active Data Guard ;
-- IORM / DBRM et maîtrise du noisy neighbor ;
-- RMAN et Zero Data Loss Recovery Appliance (ZDLRA) ;
-- TDE / Wallet, segmentation, bastion, audit et durcissement ;
-- OEDA / OEDACLI, capacité et configuration ;
-- on-premises, Cloud@Customer, OCI et scénarios hybrides/multicloud ;
-- coût, licences, capacité, FinOps et Green IT.
+- X11M : DB Servers, Storage Servers HC/EF/XT, RDMA/RoCE, XRMEM, flash, Smart Scan ;
+- X11M-Z et critères de choix ;
+- Oracle Linux KVM, consolidation et Secure Fabric ;
+- Exascale : pools, vaults, volumes, snapshots/clones et resource management ;
+- VM Live Migration ;
+- RAC, ASM/Grid Infrastructure ;
+- Oracle MAA, services RAC, FAN/FCF, Application Continuity/TAC ;
+- Data Guard / Active Data Guard, Broker, FSFO, Far Sync ;
+- IORM / DBRM et noisy neighbor ;
+- RMAN et ZDLRA ;
+- TDE/Wallet, key management, audit, segmentation et cyber-résilience ;
+- AHF, Exachk, TFA, ExaWatcher, AWR/ASH ;
+- OECA / OEDA / OEDACLI ;
+- Capacity-on-Demand et licensing ;
+- Advanced Power Management ;
+- FinOps / TCO / unit economics ;
+- Green IT / GreenOps / allocation carbone ;
+- on-premises, Cloud@Customer, OCI et scénarios hybrides/multicloud.
 
 ## Cas fil rouge — MayaBank Payment Platform
 
-Le dépôt s’appuie sur un cas bancaire réaliste servant à produire les livrables d’architecture.
+Cas entièrement synthétique destiné aux labs et aux livrables d’architecture.
 
 | Exigence | Hypothèse de travail |
 |---|---:|
@@ -49,30 +56,16 @@ Le dépôt s’appuie sur un cas bancaire réaliste servant à produire les livr
 | Sécurité | TDE, séparation des rôles, audit |
 | Sauvegarde | RMAN + ZDLRA |
 
-Ces valeurs sont volontairement des **hypothèses de lab**. Elles doivent être remplacées par des mesures réelles lors d’un projet.
-
 ## Scénarios à comparer
 
-1. **Deux sites Exadata X11M on-premises**
-2. **Exadata Cloud@Customer sur deux sites**
-3. **OCI Exadata + site de secours**
-4. **Architecture hybride / multicloud**
+1. Dual Exadata X11M on-premises
+2. Dual Exadata Cloud@Customer
+3. OCI Exadata + DR
+4. Hybride / multicloud
 
-Chaque scénario est évalué sur :
+Chaque scénario est évalué sur : SLA/RPO/RTO, performance, capacité, sécurité, exploitation, patching, migration, licensing, TCO, réversibilité, énergie et empreinte.
 
-- SLA / RPO / RTO ;
-- performance et latence ;
-- capacité et croissance ;
-- sécurité et conformité ;
-- exploitabilité ;
-- patching et maintenabilité ;
-- complexité de migration ;
-- coûts et licences ;
-- dépendances réseau ;
-- réversibilité ;
-- empreinte infrastructure.
-
-## Structure cible
+## Structure
 
 ```text
 01-business-requirements/
@@ -102,52 +95,64 @@ diagrams/
 templates/
 ```
 
+## Focus Licensing / FinOps / GreenOps
+
+Le dépôt contient désormais :
+
+- modèle CoD et cartographie des licences ;
+- TCO 3/5 ans et unit economics ;
+- allocation carbone par capacité, usage réel ou modèle hybride ;
+- dashboard GreenOps ;
+- Advanced Power Management ;
+- modèle de décision **FinOps × GreenOps × Performance × Résilience** ;
+- coût et empreinte du double-run de migration ;
+- carbon break-even.
+
+## Labs
+
+Le parcours contient désormais **23 labs**. Le LAB 23 relie licensing, FinOps et GreenOps et impose une validation N/N-1 avant toute optimisation.
+
 ## Livrables attendus d’un architecte
 
-À la fin du parcours, le dépôt doit permettre de produire :
-
-- dossier de cadrage ;
-- matrice NFR ;
+- cadrage et NFR ;
 - workload assessment ;
-- sizing CPU / RAM / stockage / IOPS / bande passante ;
-- HLD Exadata X11M ;
-- architecture réseau et flux ;
-- stratégie RAC / Data Guard / PRA ;
-- stratégie sauvegarde / restauration / cyber-résilience ;
-- modèle sécurité ;
-- stratégie de supervision ;
-- stratégie patching/lifecycle ;
-- dossier de migration ;
-- matrice de risques ;
-- matrice de décision multicritère ;
+- sizing CPU/RAM/storage/I/O/network N et N-1 ;
+- HLD/LLD ;
+- architecture réseau/flux ;
+- MAA/RAC/Data Guard/PRA ;
+- backup/recovery/cyber-résilience ;
+- modèle sécurité et key management ;
+- observabilité/evidence pack ;
+- patching/lifecycle ;
+- licensing/CoD ;
+- TCO/FinOps ;
+- Green IT/GreenOps ;
+- dossier de migration et double-run ;
 - ADR ;
-- dossier de soutenance d’architecture.
+- matrice de risques ;
+- matrice multicritère ;
+- dossier de soutenance.
 
-## Ce qu’un architecte doit savoir défendre en entretien
+## Questions qu’un architecte doit savoir défendre
 
-- Pourquoi Exadata plutôt qu’une plateforme Oracle générique ?
-- Pourquoi X11M ?
-- Quand utiliser RAC, Data Guard ou les deux ?
-- Comment atteindre un RPO proche de zéro sans promettre l’impossible ?
-- ASM classique ou Exascale : quelles conséquences d’architecture ?
-- HC, EF, XT : quel profil de données et quel coût ?
-- Comment dimensionner sans partir uniquement du volume en To ?
-- Comment éviter le noisy neighbor ?
-- Quel impact de KVM et de la consolidation ?
-- Comment patcher en minimisant l’indisponibilité ?
-- Comment protéger la base contre panne site, erreur humaine et cyberattaque ?
-- Comment organiser sauvegarde, restauration et ZDLRA ?
-- Comment choisir entre on-prem, Cloud@Customer et OCI ?
-
-## Références Oracle officielles
-
-- Oracle Exadata System Overview : https://docs.oracle.com/en/engineered-systems/exadata-database-machine/dbmso/
-- Exadata Database Machine Technical Architecture : https://docs.oracle.com/en/engineered-systems/exadata-database-machine/edbid/
-- Oracle Exadata Exascale User’s Guide : https://docs.oracle.com/en/engineered-systems/exadata-database-machine/exscl/
-- Exadata Product Management Blog : https://blogs.oracle.com/exadata/
+- Pourquoi Exadata et pourquoi X11M ?
+- HC, EF ou XT ?
+- ASM ou Exascale ?
+- Bare Metal ou KVM ?
+- Combien de cœurs actifs et pourquoi ?
+- Le sizing tient-il après perte d’un DB Server ?
+- RAC, Data Guard ou les deux ?
+- Comment l’application reprend-elle après failover ?
+- Broker/FSFO/Far Sync : quand et pourquoi ?
+- Comment protéger contre panne site, erreur humaine et cyberattaque ?
+- Quel TCO à 5 ans ?
+- Quel coût par transaction ?
+- Comment allouer correctement l’empreinte d’une plateforme mutualisée ?
+- Quelle optimisation énergétique reste sûre en N-1 ?
+- Quand la migration atteint-elle son carbon break-even ?
 
 ## Règle du dépôt
 
-Une architecture n’est pas considérée comme terminée parce qu’un schéma est joli. Elle doit relier :
+Une architecture n’est pas terminée parce qu’un schéma est joli. Elle doit relier :
 
-**exigence → décision → justification → risque → contrôle → preuve de fonctionnement.**
+**exigence → mesure → décision → justification → coût → impact environnemental → risque → contrôle → preuve de fonctionnement.**
